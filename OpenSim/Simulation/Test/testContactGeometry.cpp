@@ -347,10 +347,12 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
 
 void compareHertzAndMeshContactResults()
 {
+    std::cout << "Comparing Hertz and mesh contact results" << std::endl;
     Storage hertz("Hertz_ForceReporter_forces.sto");
     Storage meshToMesh("EF_Mesh_to_Mesh_ForceReporter_forces.sto");
     Storage noMeshToMesh("EF_noMesh_to_Mesh_ForceReporter_forces.sto");
     Storage meshToNoMesh("EF_Mesh_to_noMesh_ForceReporter_forces.sto");
+    std::cout << "  Files loaded" << std::endl;
 
     int nforces = hertz.getColumnLabels().getSize()-1;
 
@@ -375,6 +377,7 @@ void compareHertzAndMeshContactResults()
             __FILE__, __LINE__,
             "ElasticFoundation noMesh-Mesh FAILED to match Mesh-noMesh Case ");
 
+    std::cout << "  Tests passed" << std::endl;
 }
 
 
