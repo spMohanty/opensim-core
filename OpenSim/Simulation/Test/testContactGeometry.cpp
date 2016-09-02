@@ -603,21 +603,3 @@ void testIntermediateFrames() {
     SimTK_TEST_EQ_TOL(stateWeld.getY(), stateIntermedFrameY.getY(), 1e-10);
     SimTK_TEST_EQ_TOL(stateWeld.getY(), stateIntermedFrameXY.getY(), 1e-10);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
