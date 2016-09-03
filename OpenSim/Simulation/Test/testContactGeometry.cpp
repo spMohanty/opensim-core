@@ -333,7 +333,9 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     Manager manager(*osimModel, integrator);
     manager.setInitialTime(0.0);
     manager.setFinalTime(duration);
+    std::cout << "  simulating...";
     manager.integrate(osim_state);
+    std::cout << " done" << std::endl;
 
     kin->printResults(prefix);
     reporter->printResults(prefix);
@@ -341,6 +343,7 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     osimModel->disownAllComponents();
     // model takes ownership of components unless container set is told otherwise
     delete osimModel;
+    std::cout << "  returning" << std::endl;
 
     return 0;
 }
