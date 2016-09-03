@@ -352,7 +352,6 @@ void compareHertzAndMeshContactResults()
     Storage meshToMesh("EF_Mesh_to_Mesh_ForceReporter_forces.sto");
     Storage noMeshToMesh("EF_noMesh_to_Mesh_ForceReporter_forces.sto");
     Storage meshToNoMesh("EF_Mesh_to_noMesh_ForceReporter_forces.sto");
-    std::cout << "  Files loaded" << std::endl;
 
     int nforces = hertz.getColumnLabels().getSize()-1;
 
@@ -376,8 +375,6 @@ void compareHertzAndMeshContactResults()
     CHECK_STORAGE_AGAINST_STANDARD(noMeshToMesh, meshToNoMesh, rms_tols_3,
             __FILE__, __LINE__,
             "ElasticFoundation noMesh-Mesh FAILED to match Mesh-noMesh Case ");
-
-    std::cout << "  Tests passed" << std::endl;
 }
 
 
@@ -407,7 +404,7 @@ void compareHertzAndMeshContactResults()
 // The link starts at an incline of 27 degrees and then the link drops down and
 // hits the platform.
 // We test three equivalent systems that specify the transforms for the
-// platform and ball geomtries in different ways:
+// platform and ball geometries in different ways:
 //    1. Only using WeldJoints and massless bodies.
 //    2. Using a mix of PhysicalOffsetFrames and the geometry's location and
 //       orientation properties.
@@ -488,6 +485,8 @@ Model createBaseModel() {
 template <typename ContactType>
 void testIntermediateFrames() {
 
+    std::cout << "Testing transforms with intermediate frames" << std::endl;
+
     // Simulate the given model for one second and return the final state.
     auto simulate = [](Model& model) -> SimTK::State {
         // Initialize and set state.
@@ -510,6 +509,7 @@ void testIntermediateFrames() {
     const Real deg45 = 0.25 * SimTK::Pi;
 
     // Achieve transforms with weld joints and massless bodies.
+    std::cout << "-> weld joints and massless bodies" << std::endl;
     SimTK::State stateWeld;
     {
         Model model = createBaseModel();
@@ -546,6 +546,8 @@ void testIntermediateFrames() {
 
     // Achieve transforms with a mix of PhysicalOffsetFrames and
     // ContactGeometry's location and orientation properties.
+    std::cout << "-> PhysicalOffsetFrames and ContactGeometry properties"
+              << std::endl;
     SimTK::State stateIntermedFrameY;
     {
         Model model = createBaseModel();
@@ -574,6 +576,7 @@ void testIntermediateFrames() {
     }
 
     // Achieve transforms soleley with PhysicalOffsetFrames.
+    std::cout << "-> PhysicalOffsetFrames only" << std::endl;
     SimTK::State stateIntermedFrameXY;
     {
         Model model = createBaseModel();
@@ -602,4 +605,6 @@ void testIntermediateFrames() {
 
     SimTK_TEST_EQ_TOL(stateWeld.getY(), stateIntermedFrameY.getY(), 1e-10);
     SimTK_TEST_EQ_TOL(stateWeld.getY(), stateIntermedFrameXY.getY(), 1e-10);
+
+    std::cout << "Transforms with intermediate frames passed!" << std::endl;
 }
