@@ -242,10 +242,10 @@ int testBouncingBall(bool useMesh, const std::string mesh_filename)
 int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh2)
 {
     // Setup OpenSim model
-    Model *osimModel = new Model;
+    Model osimModel = Model();
 
     //OpenSim Ground
-    Ground& ground = osimModel->updGround();
+    Ground& ground = osimModel.updGround();
 
     // Add Body
     OpenSim::Body ball;
@@ -257,8 +257,8 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     // Add joints
     FreeJoint free("free", ground, Vec3(0), Vec3(0), ball, Vec3(0), Vec3(0));
 
-    osimModel->addBody(&ball);
-    osimModel->addJoint(&free);
+    osimModel.addBody(&ball);
+    osimModel.addJoint(&free);
 
     // Create ContactGeometry.
     OpenSim::ContactGeometry *ball1, *ball2;
@@ -273,8 +273,8 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     else
         ball2 = new ContactSphere(radius, Vec3(0), ball, "ball2");
     
-    osimModel->addContactGeometry(ball1);
-    osimModel->addContactGeometry(ball2);
+    osimModel.addContactGeometry(ball1);
+    osimModel.addContactGeometry(ball2);
 
     OpenSim::Force* force;
 
@@ -307,30 +307,30 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     }
 
     force->setName("contact");
-    osimModel->addForce(force);
-    osimModel->setGravity(gravity_vec);
+    osimModel.addForce(force);
+    osimModel.setGravity(gravity_vec);
 
-    osimModel->setName(prefix);
-    osimModel->clone()->print(prefix+".osim");
+    osimModel.setName(prefix);
+    osimModel.clone()->print(prefix+".osim");
 
-    Kinematics* kin = new Kinematics(osimModel);
-    osimModel->addAnalysis(kin);
+    Kinematics* kin = new Kinematics(&osimModel);
+    osimModel.addAnalysis(kin);
 
-    ForceReporter* reporter = new ForceReporter(osimModel);
-    osimModel->addAnalysis(reporter);
+    ForceReporter* reporter = new ForceReporter(&osimModel);
+    osimModel.addAnalysis(reporter);
 
-    SimTK::State& osim_state = osimModel->initSystem();
+    SimTK::State& osim_state = osimModel.initSystem();
     osim_state.updQ()[4] = height;
-    osimModel->getMultibodySystem().realize(osim_state, Stage::Position );
+    osimModel.getMultibodySystem().realize(osim_state, Stage::Position );
 
     //==========================================================================
     // Simulate it and see if it bounces correctly.
     cout << "stateY=" << osim_state.getY() << std::endl;
 
-    RungeKuttaMersonIntegrator integrator(osimModel->getMultibodySystem() );
+    RungeKuttaMersonIntegrator integrator(osimModel.getMultibodySystem() );
     integrator.setAccuracy(integ_accuracy);
     integrator.setMaximumStepSize(100*integ_accuracy);
-    Manager manager(*osimModel, integrator);
+    Manager manager(osimModel, integrator);
     manager.setInitialTime(0.0);
     manager.setFinalTime(duration);
     std::cout << "  simulating...";
@@ -340,9 +340,9 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     kin->printResults(prefix);
     reporter->printResults(prefix);
 
-    osimModel->disownAllComponents();
+    //osimModel->disownAllComponents();
     // model takes ownership of components unless container set is told otherwise
-    delete osimModel;
+    //delete osimModel;
     std::cout << "  returning" << std::endl;
 
     return 0;
