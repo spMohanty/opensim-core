@@ -248,17 +248,17 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     Ground& ground = osimModel.updGround();
 
     // Add Body
-    OpenSim::Body ball;
-    ball.setName("ball");
-    ball.setMass(mass);
-    ball.setMassCenter(Vec3(0));
-    ball.setInertia(Inertia(1.0));
+    auto* ball = new OpenSim::Body;
+    ball->setName("ball");
+    ball->setMass(mass);
+    ball->setMassCenter(Vec3(0));
+    ball->setInertia(Inertia(1.0));
 
     // Add joints
-    FreeJoint free("free", ground, Vec3(0), Vec3(0), ball, Vec3(0), Vec3(0));
+    auto* free = new FreeJoint("free", ground, Vec3(0), Vec3(0), *ball, Vec3(0), Vec3(0));
 
-    osimModel.addBody(&ball);
-    osimModel.addJoint(&free);
+    osimModel.addBody(ball);
+    osimModel.addJoint(free);
 
     // Create ContactGeometry.
     OpenSim::ContactGeometry *ball1, *ball2;
@@ -269,9 +269,9 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
         ball1 = new ContactSphere(radius, Vec3(0), ground, "ball1");
 
     if (useElasticFoundation && useMesh2)
-        ball2 = new ContactMesh(mesh_files[0], Vec3(0), Vec3(0), ball, "ball2");
+        ball2 = new ContactMesh(mesh_files[0], Vec3(0), Vec3(0), *ball, "ball2");
     else
-        ball2 = new ContactSphere(radius, Vec3(0), ball, "ball2");
+        ball2 = new ContactSphere(radius, Vec3(0), *ball, "ball2");
     
     osimModel.addContactGeometry(ball1);
     osimModel.addContactGeometry(ball2);
