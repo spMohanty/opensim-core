@@ -241,6 +241,7 @@ int testBouncingBall(bool useMesh, const std::string mesh_filename)
 // meshes and their combination
 int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh2)
 {
+try {
     // Setup OpenSim model
     Model osimModel = Model();
 
@@ -263,6 +264,8 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     // Create ContactGeometry.
     OpenSim::ContactGeometry *ball1, *ball2;
 
+    // TODO: Does the test halt here because ball2 is trying to open the same
+    //       file that ball1 is using before the file has been closed by ball1?
     if (useElasticFoundation && useMesh1)
         ball1 = new ContactMesh(mesh_files[0], Vec3(0), Vec3(0), ground, "ball1");
     else
@@ -344,6 +347,10 @@ int testBallToBallContact(bool useElasticFoundation, bool useMesh1, bool useMesh
     // model takes ownership of components unless container set is told otherwise
     //delete osimModel;
     std::cout << "  returning" << std::endl;
+} catch (const std::exception& e) {
+    std::cout << e.what() << std::endl;
+    return 1;
+}
 
     return 0;
 }
