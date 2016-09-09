@@ -264,8 +264,6 @@ try {
     // Create ContactGeometry.
     OpenSim::ContactGeometry *ball1, *ball2;
 
-    // TODO: Does the test halt here because ball2 is trying to open the same
-    //       file that ball1 is using before the file has been closed by ball1?
     if (useElasticFoundation && useMesh1)
         ball1 = new ContactMesh(mesh_files[0], Vec3(0), Vec3(0), ground, "ball1");
     else
@@ -330,13 +328,19 @@ try {
     // Simulate it and see if it bounces correctly.
     cout << "stateY=" << osim_state.getY() << std::endl;
 
+	std::cout << "  create integrator" << std::endl;
     RungeKuttaMersonIntegrator integrator(osimModel.getMultibodySystem() );
+	std::cout << "  set accuracy" << std::endl;
     integrator.setAccuracy(integ_accuracy);
+	std::cout << "  set maximum step size" << std::endl;
     integrator.setMaximumStepSize(100*integ_accuracy);
+	std::cout << "  create manager" << std::endl;
     Manager manager(osimModel, integrator);
+	std::cout << "  set initial time" << std::endl;
     manager.setInitialTime(0.0);
+	std::cout << "  set final time" << std::endl;
     manager.setFinalTime(duration);
-    std::cout << "  simulating...";
+    std::cout << "  integrating...";
     manager.integrate(osim_state);
     std::cout << " done" << std::endl;
 
