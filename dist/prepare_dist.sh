@@ -2,6 +2,8 @@ rm amd64 -r
 mkdir amd64
 mkdir amd64/opensim_4.0-1kidzik
 mkdir amd64/opensim_4.0-1kidzik/usr
+mkdir amd64/opensim_4.0-1kidzik/usr/bin
+cp ~/opensim_dependencies_install/simbody/libexec/simbody/simbody-visualizer amd64/opensim_4.0-1kidzik/usr/bin/
 cp ~/opensim_install/lib amd64/opensim_4.0-1kidzik/usr/lib -r
 cp ~/opensim_dependencies_install/BTK/lib/*/* amd64/opensim_4.0-1kidzik/usr/lib/
 rm amd64/opensim_4.0-1kidzik/usr/lib/cmake -r
@@ -16,7 +18,7 @@ Version: 4.0-1kidzik
 Section: base
 Priority: optional
 Architecture: amd64
-Depends: 
+Depends: freeglut3, freeglut3-dev
 Maintainer: Lukasz Kidzinski <lukasz.kidzinski@stanford.edu>
 Description: An UNOFFICIAL build of OpenSim 4.0. 
  This package is meant to use with the reinforcement

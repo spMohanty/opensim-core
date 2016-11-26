@@ -3,8 +3,8 @@
 # ============
 
 # PythonInterp is supposed to come before PythonLibs.
-find_package(PythonInterp 2.7 REQUIRED)
-find_package(PythonLibs 2.7 REQUIRED)
+find_package(PythonInterp 3.5 REQUIRED)
+find_package(PythonLibs 3.5 REQUIRED)
 
 # We may need to update the python install dir to include the python version,
 # now that we know it. We replace the token "VERSION" with the actual python
