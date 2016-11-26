@@ -7,7 +7,7 @@ PKGARCH=amd64
 PREFIX=$PKGARCH/$PKGNAME-$PKGVER
 
 # Prepare the directories
-rm $PKGARCH-r
+rm $PKGARCH -r
 mkdir $PREFIX -p
 mkdir $PREFIX/usr/bin -p
 
