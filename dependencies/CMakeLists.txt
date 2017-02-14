@@ -146,8 +146,8 @@ AddDependency(NAME       BTK
               CMAKE_ARGS -DBUILD_SHARED_LIBS:BOOL=ON)
 
 AddDependency(NAME       simbody
-              URL        https://github.com/simbody/simbody.git
-              TAG        ea7d94640b084d9feaa55e140c76e696f242a06a 
+              URL        https://github.com/spMohanty/simbody.git
+              TAG        2cf0f82b6daddaba9f49880b676ff2d76973f1b1 
               CMAKE_ARGS -DBUILD_EXAMPLES:BOOL=OFF 
                          -DBUILD_TESTING:BOOL=OFF)
 
