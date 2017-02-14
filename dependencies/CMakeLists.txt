@@ -13,14 +13,14 @@ function(SetDefaultCMakeInstallPrefix)
     get_filename_component(BASE_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
     # Default install prefix for OpenSim dependencies. If user changes
     # CMAKE_INSTALL_PREFIX, this directory will be removed.
-    set(DEFAULT_CMAKE_INSTALL_PREFIX 
+    set(DEFAULT_CMAKE_INSTALL_PREFIX
         ${BASE_DIR}/opensim_dependencies_install
         CACHE
         INTERNAL
         "Default CMAKE_INSTALL_PREFIX for OpenSim dependencies.")
 
     if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-        set(CMAKE_INSTALL_PREFIX 
+        set(CMAKE_INSTALL_PREFIX
             ${DEFAULT_CMAKE_INSTALL_PREFIX}
             CACHE
             PATH
@@ -29,7 +29,7 @@ function(SetDefaultCMakeInstallPrefix)
     endif()
 endfunction()
 
-# CMake doesn't clear prefix directories when user changes it. 
+# CMake doesn't clear prefix directories when user changes it.
 # Remove it to avoid confusion.
 function(RemoveDefaultInstallDirIfEmpty DIR)
     file(GLOB CONTENTS ${DIR}/*)
@@ -58,7 +58,7 @@ endfunction()
 #   NAME       -- (Required) Name of the project.
 #   URL        -- (Required) git repository to download the sources from.
 #   TAG        -- (Required) git tag to checkout before commencing build.
-#   CMAKE_ARGS -- (Optional) A CMake list of arguments to be passed to CMake 
+#   CMAKE_ARGS -- (Optional) A CMake list of arguments to be passed to CMake
 #                 while building the project.
 function(AddDependency)
     set(onevalueargs NAME URL TAG)
@@ -73,7 +73,7 @@ function(AddDependency)
     endif()
 
     # Add a cache entry providing option for user to use (or not) superbuild.
-    set(SUPERBUILD_${DEP_NAME} ON CACHE BOOL 
+    set(SUPERBUILD_${DEP_NAME} ON CACHE BOOL
         "Automatically download, configure, build and install ${DEP_NAME}")
 
     if(SUPERBUILD_${DEP_NAME})
@@ -146,15 +146,15 @@ AddDependency(NAME       BTK
               CMAKE_ARGS -DBUILD_SHARED_LIBS:BOOL=ON)
 
 AddDependency(NAME       simbody
-              URL        https://github.com/simbody/simbody.git
-              TAG        ea7d94640b084d9feaa55e140c76e696f242a06a 
-              CMAKE_ARGS -DBUILD_EXAMPLES:BOOL=OFF 
+              URL        https://github.com/spMohanty/simbody.git
+              TAG        2cf0f82b6daddaba9f49880b676ff2d76973f1b1
+              CMAKE_ARGS -DBUILD_EXAMPLES:BOOL=OFF
                          -DBUILD_TESTING:BOOL=OFF)
 
 AddDependency(NAME       docopt
               URL        https://github.com/docopt/docopt.cpp.git
               TAG        af03fa044ee1eff20819549b534ea86829a24a54)
- 
+
 #######################
 
 RemoveDefaultInstallDirIfEmpty("${DEFAULT_CMAKE_INSTALL_PREFIX}")
